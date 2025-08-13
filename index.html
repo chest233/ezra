@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ezra</title>
+    <style>
+        /* CSS重置和基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        /* 容器布局 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* 头部样式 */
+        .header {
+            text-align: center;
+            padding: 20px 20px;
+            background: #4a90e2;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* 通知区域样式 */
+        .notification-section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .notification-header h2 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .notification-item {
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4a90e2;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-content h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .notification-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* 通知列表样式 */
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* 不同类型通知的左边框颜色 */
+        .notification-item.urgent {
+            border-left-color: #dc3545;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+        }
+
+        .notification-item.info {
+            border-left-color: #17a2b8;
+            background: linear-gradient(135deg, #f0fdff 0%, #fff 100%);
+        }
+
+        .notification-item.success {
+            border-left-color: #28a745;
+            background: linear-gradient(135deg, #f8fff9 0%, #fff 100%);
+        }
+
+        /* 通知图标样式 */
+        .notification-icon {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+
+        /* 反馈文本样式 */
+        .feedback-text {
+            color: #4a90e2;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+            border-left: 2px solid #4a90e2;
+            padding-left: 8px;
+        }
+
+        /* 阅读提示文本 */
+        .read-note {
+            color: #6c757d;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* 下载区域样式 */
+        .download-section {
+            padding: 20px;
+        }
+
+        .download-header h2 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .book-card {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 16px;
+        }
+
+        .book-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .book-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .book-author {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .book-size {
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        /* 按钮动作区域 */
+        .book-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 在线阅读链接样式 */
+        .read-link {
+            flex: 1;
+            display: inline-block;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .read-link:hover {
+            background: #218838;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* 下载链接样式 */
+        .download-link {
+            flex: 1;
+            display: inline-block;
+            padding: 12px;
+            background: #4a90e2;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .download-link:hover {
+            background: #357abd;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 6px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .notification-section,
+            .download-section {
+                padding: 15px;
+            }
+
+            .notification-item,
+            .book-card {
+                padding: 14px;
+            }
+
+            .notification-list {
+                gap: 14px;
+            }
+
+            .notification-content h3 {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+
+            .notification-content p {
+                margin-bottom: 10px;
+            }
+
+            .book-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1>Ezra Group</h1>
+        </header>
+
+        <!-- 通知区域 -->
+        <section class="notification-section">
+            <div class="notification-header">
+                <h2>📢 通知</h2>
+            </div>
+
+            <div class="notification-list">
+                <div class="notification-item success">
+                    <div class="notification-content">
+                        <h3>
+                            <span class="notification-icon">📝</span>
+                            读书报告
+                        </h3>
+                        <p>大家不要忘记写读书报告，9月1日前发给文涛弟兄，电子版地址在页面下方</p>
+                        <span class="notification-time">2024-01-13 11:45</span>
+                    </div>
+                </div>
+
+                <div class="notification-item info">
+                    <div class="notification-content">
+                        <h3>
+                            <span class="notification-icon">📚</span>
+                            小组学习
+                        </h3>
+                        <p>我们接下来继续学习 『神学基础-单元五-教会』，恢复之后线下讨论</p>
+                        <p>
+                            <a href="http://www.erdandan.com/ezra/1.png" target="_blank" style="color: #4a90e2; text-decoration: underline;">
+                                徽章讨论问题
+                            </a>
+                        </p>
+                        <p>
+                            <a href="http://www.erdandan.com/ezra/2.png" target="_blank" style="color: #4a90e2; text-decoration: underline;">
+                                课程讨论问题
+                            </a>
+                        </p>
+                        <p>
+                            <a href="http://www.erdandan.com/ezra/3.png" target="_blank" style="color: #4a90e2; text-decoration: underline;">
+                                案例和反思问题
+                            </a>
+                        </p>
+                        <span class="notification-time">2024-01-15 14:30</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 电子书下载区域 -->
+        <section class="download-section">
+            <div class="download-header">
+                <h2>📖 电子书下载</h2>
+            </div>
+
+            <div class="book-card">
+                <div class="book-info">
+                    <h3>认识圣经（简体）</h3>
+                    <p class="book-author">作者：斯托得</p>
+                    <p class="book-size">文件大小：4.5 MB</p>
+                    <p class="feedback-text">发现错别字或任何问题请多多反馈</p>
+                    <div class="book-actions">
+                        <a href="https://cvws.icloud-content.com.cn/B/AXx3Bu_tRuG84HH5WnLxlMhJzZpFAfhFbxTlJx0nNHbPiJqmlOrbzEIQ/%E8%AE%A4%E8%AF%86%E5%9C%A3%E7%BB%8F-%E6%96%AF%E6%89%98%E5%BE%97%EF%BC%88%E4%BF%AE%E8%AE%A2%E7%89%88%E4%B8%80%EF%BC%89.pdf?o=ApBP5EE9O0PDBzGwTvW-LAoex7tm2dWSrhioBHEh9P5s&v=1&x=3&a=CAogf6oc2xRhliVBgd2fLshTiAUgZywr7fXiDH8k19fQPoMSbxDKteOKijMYypK_jIozIgEAUgRJzZpFWgTbzEIQaicquyKnLuxNsMn21y7vVcTvfwStUGv8Dp4pVBiJHfOhc-3_dr6hxhtyJ4SytZisDg-36B6vC-bwYNP5FewqxoIsCTYZb6dfXmwSGO90CWXQgw&e=1755057211&fl=&r=0e651ee2-1594-4ff9-96a9-86a18bea09b4-1&k=vhNQNjRkzbXonToz9Ioj9w&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=205&s=-K-xWD605sFuSwyySNufzJ4Fi6g&cd=i" class="read-link" target="_blank">📖 在线阅读</a>
+                        <a href="https://cvws.icloud-content.com.cn/B/AXx3Bu_tRuG84HH5WnLxlMhJzZpFAfhFbxTlJx0nNHbPiJqmlOrbzEIQ/%E8%AE%A4%E8%AF%86%E5%9C%A3%E7%BB%8F-%E6%96%AF%E6%89%98%E5%BE%97%EF%BC%88%E4%BF%AE%E8%AE%A2%E7%89%88%E4%B8%80%EF%BC%89.pdf?o=ApBP5EE9O0PDBzGwTvW-LAoex7tm2dWSrhioBHEh9P5s&v=1&x=3&a=CAogf6oc2xRhliVBgd2fLshTiAUgZywr7fXiDH8k19fQPoMSbxDKteOKijMYypK_jIozIgEAUgRJzZpFWgTbzEIQaicquyKnLuxNsMn21y7vVcTvfwStUGv8Dp4pVBiJHfOhc-3_dr6hxhtyJ4SytZisDg-36B6vC-bwYNP5FewqxoIsCTYZb6dfXmwSGO90CWXQgw&e=1755057211&fl=&r=0e651ee2-1594-4ff9-96a9-86a18bea09b4-1&k=vhNQNjRkzbXonToz9Ioj9w&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=205&s=-K-xWD605sFuSwyySNufzJ4Fi6g&cd=i" class="download-link">📥 直接下载</a>
+                    </div>
+                    <p class="read-note">* 在线阅读会在新标签页打开PDF，不同浏览器可能有不同的显示效果</p>
+                </div>
+            </div>
+            <div class="book-card">
+                <div class="book-info">
+                    <h3>认识圣经（繁体）</h3>
+                    <p class="book-author">作者：斯托得</p>
+                    <p class="book-size">文件大小：8.1 MB</p>
+                    <div class="book-actions">
+                        <a href="https://cvws.icloud-content.com.cn/B/AdjfjA2DG5djepJQj8h2wfdpikjiAV6DT8uBOcwpZfbI83o_R2i18KtT/%E3%80%8A%E8%AA%8D%E8%AD%98%E8%81%96%E7%B6%93%E3%80%8B-%E6%96%AF%E6%89%98%E5%BE%97.pdf?o=ApQXU2pku5_CxXjWJ-F_T-eWUjpwp4jHC-JnlnPuekyi&v=1&x=3&a=CAogOClVI4ly1x1X5WV8_BZqGkLj8sSUy17kuDnzK9atOIMSbxCCgpGLijMYgt_sjIozIgEAUgRpikjiWgS18KtTaifBwKCEmuzSU1hrNv17vb8bsm1D3Jbxj28RxSJnXn4ZT4gRzQwfdxpyJ8j23s_KZ30q_r6Tq9XQ1uzRcclLhtndwOG8eQUDyYqp_l9x55rTYg&e=1755057958&fl=&r=b10c102c-f349-49f3-8674-6787cd05b112-1&k=cmgQOFE-mIz5qRxS5u69Fw&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=205&s=LjhWtmUrYmMR7qq3Ro30ZR7C28g&cd=i" class="read-link" target="_blank">📖 在线阅读</a>
+                        <a href="http://https://cvws.icloud-content.com.cn/B/AdjfjA2DG5djepJQj8h2wfdpikjiAV6DT8uBOcwpZfbI83o_R2i18KtT/%E3%80%8A%E8%AA%8D%E8%AD%98%E8%81%96%E7%B6%93%E3%80%8B-%E6%96%AF%E6%89%98%E5%BE%97.pdf?o=ApQXU2pku5_CxXjWJ-F_T-eWUjpwp4jHC-JnlnPuekyi&v=1&x=3&a=CAogOClVI4ly1x1X5WV8_BZqGkLj8sSUy17kuDnzK9atOIMSbxCCgpGLijMYgt_sjIozIgEAUgRpikjiWgS18KtTaifBwKCEmuzSU1hrNv17vb8bsm1D3Jbxj28RxSJnXn4ZT4gRzQwfdxpyJ8j23s_KZ30q_r6Tq9XQ1uzRcclLhtndwOG8eQUDyYqp_l9x55rTYg&e=1755057958&fl=&r=b10c102c-f349-49f3-8674-6787cd05b112-1&k=cmgQOFE-mIz5qRxS5u69Fw&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=205&s=LjhWtmUrYmMR7qq3Ro30ZR7C28g&cd=i/download/%E3%80%8A%E8%AA%8D%E8%AD%98%E8%81%96%E7%B6%93%E3%80%8B-%E6%96%AF%E6%89%98%E5%BE%97.pdf" class="download-link" download>📥 直接下载</a>
+                    </div>
+                    <p class="read-note">* 在线阅读会在新标签页打开PDF，不同浏览器可能有不同的显示效果</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📚 通知中心页面加载完成！');
+        });
+    </script>
+</body>
+</html>
